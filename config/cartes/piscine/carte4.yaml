@@ -1,33 +1,70 @@
-type: custom:apexcharts-card
-experimental:
-  color_threshold: true
-  brush: true
-graph_span: 72h
-cache: true
-header:
-  show: true
-  title: Temp Piscine
-  show_states: true
-  standard_format: false
-brush:
-  selection_span: 6h
-  apex_config: null
-series:
-  - entity: sensor.temp_piscine
-    color: blue
-    type: area
-    stroke_width: 1
-    color_threshold:
-      - value: 0
-        color: red
-      - value: 20
-        color: yellow
-      - value: 27
-        color: green
-  - entity: sensor.temp_piscine
-    color: blue
-    stroke_width: 1
-    float_precision: 0
-    show:
-      in_brush: true
-      in_chart: false
+type: vertical-stack
+cards:
+  - type: custom:apexcharts-card
+    experimental:
+      color_threshold: true
+      brush: true
+    graph_span: 72h
+    cache: true
+    header:
+      show: true
+      title: Temp Piscine
+      show_states: true
+      standard_format: false
+    brush:
+      selection_span: 6h
+      apex_config: null
+    series:
+      - entity: sensor.temp_piscine
+        color: blue
+        type: area
+        stroke_width: 1
+        color_threshold:
+          - value: 0
+            color: red
+          - value: 20
+            color: yellow
+          - value: 27
+            color: green
+      - entity: sensor.temp_piscine
+        color: blue
+        stroke_width: 1
+        float_precision: 0
+        show:
+          in_brush: true
+          in_chart: false
+  - type: custom:apexcharts-card
+    graph_span: 1d
+    cache: true
+    y_axis_precision: 2
+    span:
+      start: day
+    header:
+      show: true
+      show_states: true
+      standard_format: false
+    series:
+      - entity: sensor.ph_piscine_ph
+        stroke_width: 1
+        name: pH
+      - entity: sensor.ph_piscine_ph
+        offset: '-1d'
+        stroke_width: 1
+        name: pH
+        float_precision: 2
+  - type: custom:apexcharts-card
+    graph_span: 1d
+    cache: true
+    span:
+      start: day
+    header:
+      show: true
+      show_states: true
+    series:
+      - entity: sensor.orp_piscine_orp
+        stroke_width: 1
+        name: orp
+      - entity: sensor.orp_piscine_orp
+        offset: '-1d'
+        stroke_width: 1
+        name: orp
