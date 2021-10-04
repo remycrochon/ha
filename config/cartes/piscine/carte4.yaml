@@ -1,0 +1,33 @@
+type: custom:apexcharts-card
+experimental:
+  color_threshold: true
+  brush: true
+graph_span: 72h
+cache: true
+header:
+  show: true
+  title: Temp Piscine
+  show_states: true
+  standard_format: false
+brush:
+  selection_span: 6h
+  apex_config: null
+series:
+  - entity: sensor.temp_piscine
+    color: blue
+    type: area
+    stroke_width: 1
+    color_threshold:
+      - value: 0
+        color: red
+      - value: 20
+        color: yellow
+      - value: 27
+        color: green
+  - entity: sensor.temp_piscine
+    color: blue
+    stroke_width: 1
+    float_precision: 0
+    show:
+      in_brush: true
+      in_chart: false
