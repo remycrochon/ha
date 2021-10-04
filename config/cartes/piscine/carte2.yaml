@@ -1,0 +1,15 @@
+type: vertical-stack
+cards:
+  - title: <- 3 jours
+    entities:
+      - entity: switch.pool_pump_switch
+        name: Ppe filtre
+      - entity: switch.cde_ev_eau
+        name: Ev Eau
+      - entity: switch.cde_traitement
+        name: Ppe pH
+      - entity: switch.cde_ppe_chlore
+        name: Ppe Ch
+    type: history-graph
+    hours_to_show: 72
+    refresh_interval: 0
