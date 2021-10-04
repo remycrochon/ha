@@ -1,4 +1,4 @@
 # Ma configuration Home Assistant
 
-Test de familiarisation acec Github
+Test de familiarisation avec Github
 
