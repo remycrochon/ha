@@ -1,0 +1,521 @@
+utility_meter:
+# usage jour  
+  energy_total_usage_daily:
+    source: sensor.pzem_totale_energy
+    cycle: daily
+    tariffs:
+      - hp
+      - hc
+  energy_pisc_usage_daily:
+    source: sensor.pzem_pisc_energy
+    cycle: daily
+    tariffs:
+      - hp
+      - hc
+  energy_sdb_usage_daily:
+    source: sensor.pzem_sdb_energie
+    cycle: daily
+    tariffs:
+      - hp
+      - hc
+  energy_pac1_usage_daily:
+    source: sensor.energy_pac_p_kw
+    cycle: daily
+    tariffs:
+      - hp
+      - hc
+  energy_ecs1_usage_daily:
+    source: sensor.energy_ecs_p_kw
+    cycle: daily
+    tariffs:
+      - hp
+      - hc
+# usage semaine
+  energy_total_usage_weekly:
+    source: sensor.pzem_totale_energy
+    cycle: weekly
+    tariffs:
+      - hp
+      - hc
+  energy_pisc_usage_weekly:
+    source: sensor.pzem_pisc_energy
+    cycle: weekly
+    tariffs:
+      - hp
+      - hc
+  energy_sdb_usage_weekly:
+    source: sensor.pzem_sdb_energie
+    cycle: weekly
+    tariffs:
+      - hp
+      - hc
+  energy_pac1_usage_weekly:
+    source: sensor.energy_pac_p_kw
+    cycle: weekly
+    tariffs:
+      - hp
+      - hc
+  energy_ecs1_usage_weekly:
+    source: sensor.energy_ecs_p_kw
+    cycle: weekly
+    tariffs:
+      - hp
+      - hc
+# usage mois
+  energy_total_usage_monthly:
+    source: sensor.pzem_totale_energy
+    cycle: monthly
+    tariffs:
+      - hp
+      - hc
+  energy_pisc_usage_monthly:
+    source: sensor.pzem_pisc_energy
+    cycle: monthly
+    tariffs:
+      - hp
+      - hc
+  energy_sdb_usage_monthly:
+    source: sensor.pzem_sdb_energie
+    cycle: monthly
+    tariffs:
+      - hp
+      - hc
+  energy_pac1_usage_monthly:
+    source: sensor.energy_pac_p_kw
+    cycle: monthly
+    tariffs:
+      - hp
+      - hc
+  energy_ecs1_usage_monthly:
+    source: sensor.energy_ecs_p_kw
+    cycle: monthly
+    tariffs:
+      - hp
+      - hc
+#usage an
+  energy_total_usage_yearly:
+    source: sensor.pzem_totale_energy
+    cycle: yearly
+    tariffs:
+      - hp
+      - hc
+  energy_pisc_usage_yearly:
+    source: sensor.pzem_pisc_energy
+    cycle: yearly
+    tariffs:
+      - hp
+      - hc
+  energy_sdb_usage_yearly:
+    source: sensor.pzem_sdb_energie
+    cycle: yearly
+    tariffs:
+      - hp
+      - hc
+  energy_pac1_usage_yearly:
+    source: sensor.energy_pac_p_kw
+    cycle: yearly
+    tariffs:
+      - hp
+      - hc
+  energy_ecs1_usage_yearly:
+    source: sensor.energy_ecs_p_kw
+    cycle: yearly
+    tariffs:
+      - hp
+      - hc
+# Sert au calcul python
+input_number:
+# réservé aux essais
+  furnace_power:
+    name: Furnace Power
+    min: 0
+    max: 50
+    step: 0.1
+    mode: box
+    unit_of_measurement: 'kW'
+
+  last_power:
+    min: 0
+    max: 100
+    step: 0.1
+    mode: box
+
+  energy_power:
+    min: 0
+    max: 9999
+    step: 0.1 
+
+# Réservé ECS calcul python
+  energy_ecs_p:
+    min: 0
+    max: 9999
+    step: 0.1 
+
+  last_power_ecs:
+    min: 0
+    max: 10000
+    step: 0.1
+    mode: box
+
+# Réservé PAC calcul python
+  energy_pac_p:
+    min: 0
+    max: 9999
+    step: 0.1 
+
+  last_power_pac:
+    min: 0
+    max: 10000
+    step: 0.1
+    mode: box
+
+sensor:
+# Consommation ECS calcul python conversion en KWh
+  - platform: template
+    sensors:
+      energy_ecs_p_kw:
+        friendly_name: 'Energie ECS P KW'
+        value_template: >-
+          {% set a = states('input_number.energy_ecs_p') | float | round(3) %}
+          {{ a / 1000 | round(3) }}
+        unit_of_measurement: "kWh"
+
+  - platform: integration
+    source: sensor.ecocompteur_ecs
+    name: Ecs Energie Integration
+    unit_prefix: k
+    round: 2
+
+
+# Consommation PAC calcul python conversion en KWh
+  - platform: template
+    sensors:
+      energy_pac_p_kw:
+        friendly_name: 'Energie PAC P KW'
+        value_template: >-
+          {% set a = states('input_number.energy_pac_p') | float | round(3) %}
+          {{ a / 1000 | round(3) }}
+        unit_of_measurement: "kWh"
+
+# Consommation Autres journalière HP + HC
+  - platform: template
+    sensors:
+      energy_autres_usage_daily_hp:
+        friendly_name: 'Energie Autres HP jour'
+        value_template: >-
+          {% set a = states('sensor.energy_total_usage_daily_hp') | float | round(2) %}
+          {% set b = states('sensor.energy_pisc_usage_daily_hp') | float | round(2) %}
+          {% set c = states('sensor.energy_sdb_usage_daily_hp') | float | round(2) %}
+          {% set d = states('sensor.energy_pac1_usage_daily_hp') | float | round(2) %}          
+          {% set e = states('sensor.energy_ecs1_usage_daily_hp') | float | round(2) %}
+          {{ (a-b-c-d-e) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template
+    sensors:
+      energy_autres_usage_daily_hc:
+        friendly_name: 'Energie Autres HC jour'
+        value_template: >-
+          {% set a = states('sensor.energy_total_usage_daily_hc') | float | round(2) %}
+          {% set b = states('sensor.energy_pisc_usage_daily_hc') | float | round(2) %}
+          {% set c = states('sensor.energy_sdb_usage_daily_hc') | float | round(2) %}
+          {% set d = states('sensor.energy_pac1_usage_daily_hc') | float | round(2) %}          
+          {% set e = states('sensor.energy_ecs1_usage_daily_hc') | float | round(2) %}
+          {{ (a-b-c-d-e) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template
+    sensors:
+      energy_autres_daily:
+        friendly_name: 'Energie Autres jour'
+        value_template: >-
+          {% set p = states('sensor.energy_autres_usage_daily_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_autres_usage_daily_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+
+# Consommation Autres semaine HP + HC
+  - platform: template
+    sensors:
+      energy_autres_usage_weekly_hp:
+        friendly_name: 'Energie Autres HP sem'
+        value_template: >-
+          {% set a = states('sensor.energy_total_usage_weekly_hp') | float | round(2) %}
+          {% set b = states('sensor.energy_pisc_usage_weekly_hp') | float | round(2) %}
+          {% set c = states('sensor.energy_sdb_usage_weekly_hp') | float | round(2) %}
+          {% set d = states('sensor.energy_pac1_usage_weekly_hp') | float | round(2) %}          
+          {% set e = states('sensor.energy_ecs1_usage_weekly_hp') | float | round(2) %}
+          {{ (a-b-c-d-e) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template
+    sensors:
+      energy_autres_usage_weekly_hc:
+        friendly_name: 'Energie Autres HC sem'
+        value_template: >-
+          {% set a = states('sensor.energy_total_usage_weekly_hc') | float | round(2) %}
+          {% set b = states('sensor.energy_pisc_usage_weekly_hc') | float | round(2) %}
+          {% set c = states('sensor.energy_sdb_usage_weekly_hc') | float | round(2) %}
+          {% set d = states('sensor.energy_pac1_usage_weekly_hc') | float | round(2) %}          
+          {% set e = states('sensor.energy_ecs1_usage_weekly_hc') | float | round(2) %}
+          {{ (a-b-c-d-e) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template
+    sensors:
+      energy_autres_weekly:
+        friendly_name: 'Energie Autres sem'
+        value_template: >-
+          {% set p = states('sensor.energy_autres_usage_weekly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_autres_usage_weekly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+
+# Consommation Autres mensuelle HP + HC
+  - platform: template
+    sensors:
+      energy_autres_usage_monthly_hp:
+        friendly_name: 'Energie Autres HP mois'
+        value_template: >-
+          {% set a = states('sensor.energy_total_usage_monthly_hp') | float | round(2) %}
+          {% set b = states('sensor.energy_pisc_usage_monthly_hp') | float | round(2) %}
+          {% set c = states('sensor.energy_sdb_usage_monthly_hp') | float | round(2) %}
+          {% set d = states('sensor.energy_pac1_usage_monthly_hp') | float | round(2) %}          
+          {% set e = states('sensor.energy_ecs1_usage_monthly_hp') | float | round(2) %}
+          {{ (a-b-c-d-e) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template
+    sensors:
+      energy_autres_usage_monthly_hc:
+        friendly_name: 'Energie Autres HC mois'
+        value_template: >-
+          {% set a = states('sensor.energy_total_usage_monthly_hc') | float | round(2) %}
+          {% set b = states('sensor.energy_pisc_usage_monthly_hc') | float | round(2) %}
+          {% set c = states('sensor.energy_sdb_usage_monthly_hc') | float | round(2) %}
+          {% set d = states('sensor.energy_pac1_usage_monthly_hc') | float | round(2) %}          
+          {% set e = states('sensor.energy_ecs1_usage_monthly_hc') | float | round(2) %}
+          {{ (a-b-c-d-e) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template
+    sensors:
+      energy_autres_monthly:
+        friendly_name: 'Energie Autres mois'
+        value_template: >-
+          {% set p = states('sensor.energy_autres_usage_monthly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_autres_usage_monthly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+# Consommation Autres annuelle HP + HC
+  - platform: template
+    sensors:
+      energy_autres_usage_yearly_hp:
+        friendly_name: 'Energie Autres HP an'
+        value_template: >-
+          {% set a = states('sensor.energy_total_usage_yearly_hp') | float | round(2) %}
+          {% set b = states('sensor.energy_pisc_usage_yearly_hp') | float | round(2) %}
+          {% set c = states('sensor.energy_sdb_usage_yearly_hp') | float | round(2) %}
+          {% set d = states('sensor.energy_pac1_usage_yearly_hp') | float | round(2) %}          
+          {% set e = states('sensor.energy_ecs1_usage_yearly_hp') | float | round(2) %}
+          {{ (a-b-c-d-e) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template
+    sensors:
+      energy_autres_usage_yearly_hc:
+        friendly_name: 'Energie Autres HC an'
+        value_template: >-
+          {% set a = states('sensor.energy_total_usage_yearly_hc') | float | round(2) %}
+          {% set b = states('sensor.energy_pisc_usage_yearly_hc') | float | round(2) %}
+          {% set c = states('sensor.energy_sdb_usage_yearly_hc') | float | round(2) %}
+          {% set d = states('sensor.energy_pac1_usage_yearly_hc') | float | round(2) %}          
+          {% set e = states('sensor.energy_ecs1_usage_yearly_hc') | float | round(2) %}
+          {{ (a-b-c-d-e) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template
+    sensors:
+      energy_autres_yearly:
+        friendly_name: 'Energie Autres an'
+        value_template: >-
+          {% set p = states('sensor.energy_autres_usage_yearly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_autres_usage_yearly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+# Consommation journalière HP + HC
+  - platform: template
+    sensors:
+      energy_total_daily:
+        friendly_name: 'Energie Totale jour'
+        value_template: >-
+          {% set p = states('sensor.energy_total_usage_daily_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_total_usage_daily_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_pisc_daily:
+        friendly_name: 'Energie Piscine jour'
+        value_template: >-
+          {% set p = states('sensor.energy_pisc_usage_daily_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_pisc_usage_daily_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_sdb_daily:
+        friendly_name: 'Energie Sdb jour'
+        value_template: >-
+          {% set p = states('sensor.energy_sdb_usage_daily_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_sdb_usage_daily_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_pac1_daily:
+        friendly_name: 'Energie PAC jour'
+        value_template: >-
+          {% set p = states('sensor.energy_pac1_usage_daily_hp') | float | round(3) %}
+          {% set o = states('sensor.energy_pac1_usage_daily_hc') | float | round(3) %}
+          {{ (o + p) | round(3) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_ecs1_daily:
+        friendly_name: 'Energie ECS jour'
+        value_template: >-
+          {% set p = states('sensor.energy_ecs1_usage_daily_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_ecs1_usage_daily_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+# Consommation semaine HP + HC
+  - platform: template
+    sensors:
+      energy_total_weekly:
+        friendly_name: 'Energie Totale sem'
+        value_template: >-
+          {% set p = states('sensor.energy_total_usage_weekly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_total_usage_weekly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_pisc_weekly:
+        friendly_name: 'Energie Piscine sem'
+        value_template: >-
+          {% set p = states('sensor.energy_pisc_usage_weekly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_pisc_usage_weekly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_sdb_weekly:
+        friendly_name: 'Energie Sdb sem'
+        value_template: >-
+          {% set p = states('sensor.energy_sdb_usage_weekly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_sdb_usage_weekly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_pac1_weekly:
+        friendly_name: 'Energie PAC sem'
+        value_template: >-
+          {% set p = states('sensor.energy_pac1_usage_weekly_hp') | float | round(3) %}
+          {% set o = states('sensor.energy_pac1_usage_weekly_hc') | float | round(3) %}
+          {{ (o + p) | round(3) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_ecs1_weekly:
+        friendly_name: 'Energie ECS sem'
+        value_template: >-
+          {% set p = states('sensor.energy_ecs1_usage_weekly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_ecs1_usage_weekly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+# Consommation mensuelle HP + HC
+  - platform: template
+    sensors:
+      energy_total_monthly:
+        friendly_name: 'Energie Totale mois'
+        value_template: >-
+          {% set p = states('sensor.energy_total_usage_monthly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_total_usage_monthly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_pisc_monthly:
+        friendly_name: 'Energie Piscine mois'
+        value_template: >-
+          {% set p = states('sensor.energy_pisc_usage_monthly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_pisc_usage_monthly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_sdb_monthly:
+        friendly_name: 'Energie Sdb mois'
+        value_template: >-
+          {% set p = states('sensor.energy_sdb_usage_monthly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_sdb_usage_monthly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_pac1_monthly:
+        friendly_name: 'Energie PAC mois'
+        value_template: >-
+          {% set p = states('sensor.energy_pac1_usage_monthly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_pac1_usage_monthly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_ecs1_monthly:
+        friendly_name: 'Energie ECS mois'
+        value_template: >-
+          {% set p = states('sensor.energy_ecs1_usage_monthly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_ecs1_usage_monthly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+# Consommation annuelle HP + HC
+  - platform: template
+    sensors:
+      energy_total_yearly:
+        friendly_name: 'Energie Totale an'
+        value_template: >-
+          {% set p = states('sensor.energy_total_usage_yearly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_total_usage_yearly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_pisc_yearly:
+        friendly_name: 'Energie Piscine an'
+        value_template: >-
+          {% set p = states('sensor.energy_pisc_usage_yearly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_pisc_usage_yearly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_sdb_yearly:
+        friendly_name: 'Energie Sdb an'
+        value_template: >-
+          {% set p = states('sensor.energy_sdb_usage_yearly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_sdb_usage_yearly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_pac1_yearly:
+        friendly_name: 'Energie PAC an'
+        value_template: >-
+          {% set p = states('sensor.energy_pac1_usage_yearly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_pac1_usage_yearly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
+  - platform: template 
+    sensors:
+      energy_ecs1_yearly:
+        friendly_name: 'Energie ECS an'
+        value_template: >-
+          {% set p = states('sensor.energy_ecs1_usage_yearly_hp') | float | round(2) %}
+          {% set o = states('sensor.energy_ecs1_usage_yearly_hc') | float | round(2) %}
+          {{ (o + p) | round(2) }}
+        unit_of_measurement: "kWh"
