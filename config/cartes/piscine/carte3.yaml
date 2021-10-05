@@ -101,15 +101,19 @@ entities:
     show_state: false
     type: custom:multiple-entity-row
   - entities:
+      - entity: input_datetime.heure_ma_pump_pisc_hiv
+        name: MaPpe
+      - entity: input_datetime.heure_at_pump_pisc_hiv
+        name: AtPpe
       - entity: input_boolean.hors_gel
-        name: Hors Gel si actif
+        name: HG si actif
       - entity: input_number.hors_gel_inf
-        name: T° Inf
+        name: T°Inf
       - entity: input_number.hors_gel_sup
-        name: T° Sup
+        name: T°Sup
     entity: input_boolean.hors_gel
     icon: mdi:snowflake-alert
-    name: Hors Gel
+    name: Hivernage
     show_state: false
     type: custom:multiple-entity-row
   - entities:
@@ -151,8 +155,12 @@ entities:
       - entity: input_boolean.volet_piscine_auto
       - entity: input_datetime.heure_ouv_volet_pisc
       - entity: input_datetime.heure_ferm_volet_pisc
-      - label: Hors Gel
+      - label: Hivernage
         type: section
+      - entity: input_datetime.heure_ma_pump_pisc_hiv
+        name: Heure Marche Ppe
+      - entity: input_datetime.heure_at_pump_pisc_hiv
+        name: Heure Arret Ppe
       - entity: input_boolean.hors_gel
         name: Hors Gel si Actif
       - entity: input_number.hors_gel_inf
