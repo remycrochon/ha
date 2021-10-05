@@ -54,6 +54,16 @@ input_datetime:
     has_date: false
     has_time: true
 
+  heure_ma_pump_pisc_hiv:
+    name: Heure Ma Pompe Pisc Hiv
+    has_date: false
+    has_time: true
+
+  heure_at_pump_pisc_hiv:
+    name: Heure At Pompe Pisc Hiv
+    has_date: false
+    has_time: true
+
 input_boolean:
   # inutilisée????????? à verifier
   pool_water_level_critical:
@@ -89,6 +99,7 @@ input_select:
       - "Auto"
       - "On"
       - "Off"
+      - "Hivernage"
     initial: "Auto"
     icon: mdi:pool
 
