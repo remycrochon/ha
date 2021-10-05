@@ -1,1 +1,80 @@
+entities:
+  - entity: input_select.volets
+    name: Mode de Fonctionnement
+  - entities:
+      - entity: sensor.heure_leve_soleil
+        name: Levé
+      - entity: sensor.heure_couche_soleil
+        name: Couché
+    entity: sensor.heure_leve_soleil
+    icon: mdi:weather-sunny
+    name: Soleil
+    show_state: false
+    type: custom:multiple-entity-row
+  - entities:
+      - entity: sun.sun
+        name: Position
+      - entity: sensor.luminosite
+        name: mesure
+      - entity: input_number.luminosite_seuil_bas
+        name: Bas
+      - entity: input_number.luminosite_seuil_haut
+        name: Haut
+    entity: input_number.luminosite_seuil_bas
+    icon: mdi:weather-sunny
+    name: Auto Hiver
+    show_state: false
+    type: custom:multiple-entity-row
+  - entities:
+      - entity: input_datetime.horaire_ete_volet_ouv
+        name: Ouv
+      - entity: input_datetime.horaire_ete_volet_ferm
+        name: Ferm
+    entity: input_datetime.horaire_ete_volet_ouv
+    icon: mdi:clock
+    name: Auto Ete
+    show_state: false
+    type: custom:multiple-entity-row
+  - entities:
+      - entity: input_boolean.nuit_jour
+        name: N/J (Actif)
+      - entity: input_boolean.presence_amis_bureau
+        name: Amis Bur
+      - entity: input_boolean.presence_amis_ch_nord
+        name: Amis Nord
+      - entity: input_boolean.presence_amis_ch_sud
+        name: Amis Sud
+    entity: input_boolean.nuit_jour
+    icon: mdi:account
+    name: Communs
+    show_state: false
+    type: custom:multiple-entity-row
+  - entities:
+      - entity: input_datetime.horaire_ete_volet_ouv
+        name: Heure Ouverture ETE
+      - entity: input_datetime.horaire_ete_volet_ferm
+        name: Heure Fermeture ETE
+      - entity: input_number.luminosite_seuil_bas
+        name: Lumin. Seuil bas
+      - entity: input_number.luminosite_seuil_haut
+        name: Lumin. Seuil Haut
+      - entity: input_boolean.nuit_jour
+      - entity: input_boolean.presence_amis_bureau
+        name: Presence Amis Bureau
+      - entity: input_boolean.presence_amis_ch_nord
+        name: Presence Amis Chamb Nord
+      - entity: input_boolean.presence_amis_ch_sud
+        name: Presence Amis Chamb Sud
+    head:
+      label: Parametres
+      type: section
+    padding: 0
+    type: custom:fold-entity-row
+how_header_toggle: false
+style: |
+  ha-card {
+    border: solid 2px var(--primary-color);
+  }
+title: Volets
+type: entities
 
