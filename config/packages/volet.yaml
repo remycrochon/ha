@@ -62,6 +62,7 @@ input_number:
       max: 50
       unit_of_measurement: "Lux"
       icon: mdi:weather-sunny 
+
 # gestion volet: Niveau Ensoleilement ouv auto volet
     radiation_seuil_ferm_volet:
       name: Radiat seuil ferm volets
@@ -70,13 +71,7 @@ input_number:
       max: 1200
       unit_of_measurement: "w/m2"
       icon: mdi:weather-sunny
-# Moteur pas à Pas en test
-    stepper_control:
-      name: Stepper Control
-      initial: 0
-      min: -1000
-      max: 1000
-      step: 1
+
 
 binary_sensor:
 #inversion d'état pour l'alarme ALARMO
@@ -96,20 +91,7 @@ binary_sensor:
           {% else %}
             on
           {% endif %} 
-# Equation fermeture volet SDB en mode soleil
-      volet_soleil_ferm_sdb:
-        value_template: >-
-          {% set a=states('sensor.sun_azimuth_2')|float %}
-          {% set b=states('sensor.vp2_radiation') | float %}
-          {% set c=states('input_number.radiation_seuil_ferm_volet') | float %}
-          {{ (a>103) and (a<160) and (b>c) }}
-# Equation fermeture volet Sud en mode soleil
-      volet_soleil_ferm_sud:
-        value_template: >-
-          {% set a=states('sensor.sun_azimuth_2')|float %}
-          {% set b=states('sensor.vp2_radiation') | float %}
-          {% set c=states('input_number.radiation_seuil_ferm_volet') | float %}
-          {{ a>137 and a<266 and b>c }}
+
 
 input_select:
   volets:
@@ -230,17 +212,5 @@ cover:
 
 
 
-
-# Moteur pas à Pas en test
-automation:
-  - alias: Write Stepper Value to ESP
-    trigger:
-      platform: state
-      entity_id: input_number.stepper_control
-    action:
-      # Replace livingroom with the name you gave the ESP
-      - service: esphome.esp140_test_control_stepper
-        data_template:
-          target: '{{ trigger.to_state.state | int }}'
 
 
