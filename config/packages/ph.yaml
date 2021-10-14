@@ -186,10 +186,9 @@ sensor:
           {% set y=state_attr("sensor.ph_stat", "mean") | float %}
           {% set x=states('input_number.simul_ph') | float %}
           {% set b=states('input_number.ph_cible') | float %}
-          {% set c=states('input_number.ph_hysteresis') | float %}
           {% set d=states('input_number.ph_debit_ppe') | float %}
           {% set e=states('input_number.ph_concentration') | float %}
-          {% set r=(((a+c-b)/(e/100))/d)*3600|round(2)|int %} 
+          {% set r=(((a-b)/(e/100))/d)*3600|round(2)|int %} 
           {% if r < 0 %}
             {{ 0 }}
           {% else %}
@@ -206,10 +205,9 @@ sensor:
           {% set y=state_attr("sensor.ph_stat", "mean") | float %}
           {% set x=states('input_number.simul_ph') | float %}
           {% set b=states('input_number.ph_cible') | float %}
-          {% set c=states('input_number.ph_hysteresis') | float %}
           {% set d=states('input_number.ph_debit_ppe') | float %}
           {% set e=states('input_number.ph_concentration') | float %}
-          {% set r=(((a+c-b)/(e/100))/d)*3600|round(2)|int %} 
+          {% set r=(((a-b)/(e/100))/d)*3600|round(2)|int %} 
           {% if r < 0 %}
             {{ 0 }}
           {% else %}
