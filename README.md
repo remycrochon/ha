@@ -1,5 +1,5 @@
-# Ma configuration Home Assistant
+# Configuration Home Assistant
 
-Je vous propose ma configuration Home Assistant en lien avec mon blog https://domo.rem81.com
+Fichiers Home Assistant en lien avec mon blog https://domo.rem81.com
 
 
