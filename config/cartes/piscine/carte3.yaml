@@ -107,13 +107,13 @@ entities:
         name: MaPpe
       - entity: input_datetime.heure_at_pump_pisc_hiv
         name: AtPpe
-      - entity: input_boolean.hors_gel
-        name: HG si actif
-      - entity: input_number.hors_gel_inf
-        name: T°Inf
-      - entity: input_number.hors_gel_sup
-        name: T°Sup
-    entity: input_boolean.hors_gel
+      - entity: input_boolean.hors_gel_valid
+        name: HG Valid
+      - entity: input_number.hors_gel_inf_seuil1
+        name: T°Inf S1
+      - entity: input_number.hors_gel_inf_seuil2
+        name: T°Inf S2
+    entity: input_boolean.hors_gel_valid
     icon: mdi:snowflake-alert
     name: Hiver
     show_state: false
@@ -165,10 +165,10 @@ entities:
         name: Heure Marche Ppe
       - entity: input_datetime.heure_at_pump_pisc_hiv
         name: Heure Arret Ppe
-      - entity: input_boolean.hors_gel
-        name: Hors Gel si Actif
-      - entity: input_number.hors_gel_inf
-      - entity: input_number.hors_gel_sup
+      - entity: input_boolean.hors_gel_valid
+        name: Hors Gel Validation
+      - entity: input_number.hors_gel_inf_seuil1
+      - entity: input_number.hors_gel_inf_seuil2
       - label: Chlore
         type: section
       - entity: input_number.temps_cartouche_chlore
