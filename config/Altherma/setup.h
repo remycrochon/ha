@@ -1,11 +1,11 @@
 //Setup your credentials and mqtt info here:
 //only change the value between the " " leave the rest of the line untouched.
-#define WIFI_SSID "rem33"//**Your SSID here**
-#define WIFI_PWD "HEDEN33HEDEN33"//**Your password here** leave empty if open (bad!)
+#define WIFI_SSID "SSID"//**Your SSID here**
+#define WIFI_PWD "pwd"//**Your password here** leave empty if open (bad!)
 
-#define MQTT_SERVER "192.168.0.37"//**IP address here of your MQTT server**
-#define MQTT_USERNAME "remy"//leave empty if not set (bad!)
-#define MQTT_PASSWORD "Albi_2020"//leave empty if not set (bad!)
+#define MQTT_SERVER "IP_mqtt"//**IP address here of your MQTT server**
+#define MQTT_USERNAME "username"//leave empty if not set (bad!)
+#define MQTT_PASSWORD "pwd"//leave empty if not set (bad!)
 #define MQTT_PORT 1883
 
 #define FREQUENCY 30000 //query values every 30 sec
